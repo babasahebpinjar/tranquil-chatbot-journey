@@ -105,7 +105,8 @@ const Chat: React.FC = () => {
     if (lowerMessage.includes("quote") || 
         (lowerMessage.includes("daily") && lowerMessage.includes("wisdom"))) {
       addMessage(message, "user");
-      const quote = `Here's today's inspirational quote: "${getAffirmations("gratitude")[0]}"`;
+      const quotes = getAffirmations("gratitude");
+      const quote = `Here's today's inspirational quote: "${quotes[0]}"`;
       addMessage(quote, "assistant");
       setActiveFeature("quote");
       return true;
@@ -125,7 +126,7 @@ const Chat: React.FC = () => {
       addMessage(message, "user");
       
       // Detect mood from message
-      let mood: keyof typeof getAffirmations = "peace";
+      let mood: string = "peace";
       if (lowerMessage.includes("love")) mood = "love";
       else if (lowerMessage.includes("strength")) mood = "strength";
       else if (lowerMessage.includes("grow")) mood = "growth";
