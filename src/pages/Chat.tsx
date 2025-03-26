@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -18,8 +17,8 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 import { 
   Send, Moon, Sun, LogOut, Menu, 
-  Timer, Quote, PrayingHands, MessageSquare, 
-  Sparkles, Heart, Volume2 
+  Timer, Quote, MessageSquare, 
+  Sparkles, Heart, Volume2, Prayer
 } from "lucide-react";
 
 const Chat: React.FC = () => {
@@ -220,7 +219,7 @@ const Chat: React.FC = () => {
                             closeSidebar();
                           }}
                         >
-                          <PrayingHands className="h-4 w-4 mr-2" />
+                          <Prayer className="h-4 w-4 mr-2" />
                           Prayer Request
                         </Button>
                         
@@ -403,7 +402,10 @@ const Chat: React.FC = () => {
               Start meditation
             </button> | 
             <button 
-              onClick={() => addMessage("What's today's inspirational quote?", "user") && processSpecialCommands("What's today's inspirational quote?")}
+              onClick={() => {
+                addMessage("What's today's inspirational quote?", "user");
+                processSpecialCommands("What's today's inspirational quote?");
+              }}
               className="hover:text-foreground transition-colors duration-200 mx-1"
             >
               Get quote

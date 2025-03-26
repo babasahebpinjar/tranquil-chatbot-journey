@@ -58,7 +58,10 @@ const DAILY_QUOTES = [
 export function getDailyQuote() {
   // Get a consistent quote for the day based on date
   const today = new Date();
-  const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+  const startOfYear = new Date(today.getFullYear(), 0, 0);
+  const diffTime = today.getTime() - startOfYear.getTime();
+  const dayOfYear = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
   const quoteIndex = dayOfYear % DAILY_QUOTES.length;
   
   return DAILY_QUOTES[quoteIndex];
