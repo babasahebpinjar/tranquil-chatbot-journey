@@ -5,22 +5,24 @@ const API_BASE_URL = "http://localhost:8000";
 
 export async function sendChatMessage(username: string, message: string) {
   try {
-    const response = await fetch(`${API_BASE_URL}/chatbot`, {
-      method: "POST",
+    // Use the new /query endpoint to get responses from the vector database
+    const response = await fetch(`${API_BASE_URL}/query?query=${encodeURIComponent(message)}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        username,
-        message,
-      }),
     });
 
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+    return {
+      query: data.query,
+      response: data.response[0], // The main response text
+      sources: data.response[1],  // The source files
+    };
   } catch (error) {
     console.error("Failed to send message:", error);
     toast({
@@ -31,7 +33,9 @@ export async function sendChatMessage(username: string, message: string) {
     
     // Return a fallback response for better UX
     return {
-      response: "I'm currently unable to connect to my knowledge base. Please check your connection and try again later."
+      query: message,
+      response: "I'm currently unable to connect to my knowledge base. Please check your connection and try again later.",
+      sources: [],
     };
   }
 }

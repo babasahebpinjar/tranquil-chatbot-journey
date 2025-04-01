@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -74,7 +73,16 @@ const Chat: React.FC = () => {
     setLoading(true);
     try {
       const response = await sendChatMessage(user.username, message);
-      addMessage(response.response || "I don't know how to respond to that.", "assistant");
+      
+      // Format the response with sources if available
+      let formattedResponse = response.response || "I don't know how to respond to that.";
+      
+      // Add sources if they exist
+      if (response.sources && response.sources.length > 0) {
+        formattedResponse += "\n\nSources: " + response.sources.join(", ");
+      }
+      
+      addMessage(formattedResponse, "assistant");
     } catch (error) {
       console.error("Error sending message:", error);
       addMessage("I'm sorry, I encountered an error. Please try again later.", "assistant");
@@ -126,7 +134,7 @@ const Chat: React.FC = () => {
       addMessage(message, "user");
       
       // Detect mood from message
-      let mood: string = "peace";
+      let mood: keyof typeof AFFIRMATIONS = "peace";
       if (lowerMessage.includes("love")) mood = "love";
       else if (lowerMessage.includes("strength")) mood = "strength";
       else if (lowerMessage.includes("grow")) mood = "growth";
