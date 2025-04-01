@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -6,7 +7,7 @@ import ChatMessage from "@/components/ChatMessage";
 import MeditationTimer from "@/components/MeditationTimer";
 import DailyQuote from "@/components/DailyQuote";
 import PrayerRequest from "@/components/PrayerRequest";
-import { sendChatMessage, getAffirmations } from "@/utils/api";
+import { sendChatMessage, getAffirmations, AFFIRMATIONS } from "@/utils/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -134,13 +135,13 @@ const Chat: React.FC = () => {
       addMessage(message, "user");
       
       // Detect mood from message
-      let mood: keyof typeof AFFIRMATIONS = "peace";
-      if (lowerMessage.includes("love")) mood = "love";
-      else if (lowerMessage.includes("strength")) mood = "strength";
-      else if (lowerMessage.includes("grow")) mood = "growth";
-      else if (lowerMessage.includes("gratitude") || lowerMessage.includes("thankful")) mood = "gratitude";
+      let moodType: keyof typeof AFFIRMATIONS = "peace";
+      if (lowerMessage.includes("love")) moodType = "love";
+      else if (lowerMessage.includes("strength")) moodType = "strength";
+      else if (lowerMessage.includes("grow")) moodType = "growth";
+      else if (lowerMessage.includes("gratitude") || lowerMessage.includes("thankful")) moodType = "gratitude";
       
-      const affirmations = getAffirmations(mood);
+      const affirmations = getAffirmations(moodType);
       const randomAffirmation = affirmations[Math.floor(Math.random() * affirmations.length)];
       
       addMessage(`Here's an affirmation for you: "${randomAffirmation}" Repeat this to yourself with belief and conviction.`, "assistant");
