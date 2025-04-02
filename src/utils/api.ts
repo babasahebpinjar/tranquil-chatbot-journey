@@ -1,6 +1,7 @@
+
 import { toast } from "@/components/ui/use-toast";
 
-const API_BASE_URL = "http://164.52.223.25";
+const API_BASE_URL = "http://164.52.223.25:8000";
 
 export async function sendChatMessage(username: string, message: string) {
   try {
